@@ -2,6 +2,7 @@
   "name": "hazelnut",
   "private": true,
   "version": "0.0.0",
+  "prettier": "prettier-airbnb-config",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "query-string": "^8.1.0",
+    "prettier-airbnb-config": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
