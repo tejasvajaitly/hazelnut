@@ -1,5 +1,5 @@
-const client_id = 'c40762ee7dae4b9ca07e2cb92403860e';
-const redirect_uri = 'http://localhost:5173/callback';
+const client_id = import.meta.env.VITE_CLIENT_ID;
+const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
 const scope = 'user-read-private user-read-email';
 
 export function generateCodeVerifier(length) {
