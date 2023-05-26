@@ -1,6 +1,7 @@
 const client_id = import.meta.env.VITE_CLIENT_ID;
 const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
-const scope = 'user-read-private user-read-email';
+const scope =
+  'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-library-read';
 
 export function generateCodeVerifier(length) {
   let text = '';
@@ -69,5 +70,64 @@ export async function fetchProfile(token) {
   }
   if (result.status === 401) {
     return null;
+  }
+}
+
+async function fetchWebApi(endpoint, method, body) {
+  const token = localStorage.getItem('access_token');
+  console.log(token, 'access_token');
+  const res = await fetch(`https://api.spotify.com/${endpoint}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method,
+    body: JSON.stringify(body),
+  });
+  return await res.json();
+}
+
+export async function getSaveddTracks(offset) {
+  const res = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
+  const totalCount = Math.ceil(res.total / res.limit) - 1;
+  console.log(res, 'res');
+  let savedSongs = res.items;
+  for (var i = 1; i <= totalCount; i++) {
+    offset = offset + 50;
+    const response = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
+    let merged = savedSongs.concat(response.items);
+    savedSongs = merged;
+    console.log(response.items, 'in progress');
+  }
+  console.log(savedSongs, 'savedSongs final!!');
+  return savedSongs;
+}
+
+export async function createNewPlaylist(userId, savedSongs) {
+  const body = {
+    name: 'liked songs(hazelnut)',
+    description: 'playlist created using hazelnut',
+    public: true,
+  };
+  const res = await fetchWebApi(`v1/users/${userId}/playlists`, 'POST', body);
+  const playlistId = res.id;
+
+  let songToBeAdded = [];
+  for (var i = 0; i < savedSongs.length; i++) {
+    songToBeAdded = songToBeAdded.concat(savedSongs[i].track.uri);
+  }
+
+  console.log(songToBeAdded, 'array of all the songs uri');
+
+  const batchOfArrays = [];
+  for (let i = 0; i < songToBeAdded.length; i += 100) {
+    const chunk = songToBeAdded.slice(i, i + 100);
+    batchOfArrays.push(chunk);
+  }
+
+  console.log(batchOfArrays, 'array with batch of array of size 100 with the songs uri');
+
+  for (var c = 0; c < batchOfArrays.length; c++) {
+    const bodyy = {uris: batchOfArrays[c]};
+    const response = await fetchWebApi(`v1/playlists/${playlistId}/tracks`, 'POST', bodyy);
   }
 }
