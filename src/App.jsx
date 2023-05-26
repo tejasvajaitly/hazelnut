@@ -36,6 +36,7 @@ function App() {
         <>
           <img src={currentUser.images[0].url} alt={currentUser.display_name} />
           <h1>{`Welcome ${currentUser?.display_name}`}</h1>
+          <p>{currentUser?.email}</p>
         </>
       )}
     </>
