@@ -75,7 +75,6 @@ export async function fetchProfile(token) {
 
 async function fetchWebApi(endpoint, method, body) {
   const token = localStorage.getItem('access_token');
-  console.log(token, 'access_token');
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -89,16 +88,13 @@ async function fetchWebApi(endpoint, method, body) {
 export async function getSaveddTracks(offset) {
   const res = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
   const totalCount = Math.ceil(res.total / res.limit) - 1;
-  console.log(res, 'res');
   let savedSongs = res.items;
   for (var i = 1; i <= totalCount; i++) {
     offset = offset + 50;
     const response = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
     let merged = savedSongs.concat(response.items);
     savedSongs = merged;
-    console.log(response.items, 'in progress');
   }
-  console.log(savedSongs, 'savedSongs final!!');
   return savedSongs;
 }
 
@@ -116,15 +112,11 @@ export async function createNewPlaylist(userId, savedSongs) {
     songToBeAdded = songToBeAdded.concat(savedSongs[i].track.uri);
   }
 
-  console.log(songToBeAdded, 'array of all the songs uri');
-
   const batchOfArrays = [];
   for (let i = 0; i < songToBeAdded.length; i += 100) {
     const chunk = songToBeAdded.slice(i, i + 100);
     batchOfArrays.push(chunk);
   }
-
-  console.log(batchOfArrays, 'array with batch of array of size 100 with the songs uri');
 
   for (var c = 0; c < batchOfArrays.length; c++) {
     const bodyy = {uris: batchOfArrays[c]};
