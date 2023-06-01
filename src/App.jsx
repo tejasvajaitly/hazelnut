@@ -1,4 +1,5 @@
 import './App.css';
+import './styles.css';
 import {useEffect, useState} from 'react';
 import {
   handleLogin,
@@ -17,7 +18,6 @@ function App() {
     const authFlow = async () => {
       if (localStorage.getItem('access_token')) {
         const profile = await fetchProfile(localStorage.getItem('access_token'));
-        console.log(profile);
         if (!profile) {
           localStorage.removeItem('access_token');
         }
@@ -37,7 +37,6 @@ function App() {
 
   const handleGetSavedSongs = async () => {
     const res = await getSaveddTracks(offset);
-    console.log(res, 'savedSongs');
     setSavedSongs(res);
   };
 
@@ -52,9 +51,17 @@ function App() {
         <button onClick={handleLogin}>login with spotify</button>
       ) : (
         <>
-          <img src={currentUser.images[0].url} alt={currentUser.display_name} />
+          <div className="profilePictureContainer">
+            <div className="profilePictureWrapper">
+              <img
+                className="avatar"
+                src={currentUser?.images[0]?.url}
+                alt={currentUser.display_name}
+              />
+            </div>
+          </div>
+
           <h1>{`Welcome ${currentUser?.display_name}`}</h1>
-          <p>{currentUser?.email}</p>
           <button onClick={handleGetSavedSongs}>get your liked songs</button>
           <button onClick={handleCreateNewPlaylist}>get them in a new playlist</button>
           {savedSongs ? (
