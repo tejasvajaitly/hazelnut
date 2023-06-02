@@ -1,5 +1,4 @@
 import './App.css';
-import './styles.css';
 import {useEffect, useState} from 'react';
 import {
   handleLogin,
@@ -7,12 +6,17 @@ import {
   fetchProfile,
   getSaveddTracks,
   createNewPlaylist,
+  getPlaylistItems,
 } from './utils';
+import {useNavigate} from 'react-router-dom';
+import {ReactComponent as LeftNav} from '../public/left-nav.svg';
+import {ReactComponent as RightNav} from '../public/right-nav.svg';
 
 function App() {
   const [currentUser, setCurrentuser] = useState(null);
   const [savedSongs, setSavedSongs] = useState(null);
   const [offset, setOffset] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authFlow = async () => {
@@ -28,7 +32,11 @@ function App() {
         if (code) {
           const accessToken = await getAccessToken(code);
           const profile = await fetchProfile(accessToken);
-          setCurrentuser(profile);
+          if (profile) {
+            setCurrentuser(profile);
+            console.log('lol');
+            navigate('/');
+          }
         }
       }
     };
@@ -50,34 +58,39 @@ function App() {
       {!currentUser ? (
         <button onClick={handleLogin}>login with spotify</button>
       ) : (
-        <>
-          <div className="profilePictureContainer">
-            <div className="profilePictureWrapper">
-              <img
-                className="avatar"
-                src={currentUser?.images[0]?.url}
-                alt={currentUser.display_name}
-              />
-            </div>
-          </div>
-
-          <h1>{`Welcome ${currentUser?.display_name}`}</h1>
-          <button onClick={handleGetSavedSongs}>get your liked songs</button>
-          <button onClick={handleCreateNewPlaylist}>get them in a new playlist</button>
-          {savedSongs ? (
-            <div>
-              <div>
-                {savedSongs.map(savedSong => {
-                  return <p>{` ${savedSong.track.name}`}</p>;
-                })}
+        <div className="">
+          <nav className="relative bg-[#121212] fixed w-full z-20 top-0 left-0 rounded-lg">
+            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+              <div className="flex flex-row justify-between w-[72px]">
+                <NavButton>
+                  <LeftNav />
+                </NavButton>
+                <NavButton>
+                  <RightNav />
+                </NavButton>
               </div>
-              <div></div>
+              <button className="rounded-full px-3 py-1 text-xs">logout</button>
+              <div className="rounded-full bg-black p-1 w-8 h-8">
+                <img
+                  className="rounded-full h-full w-full object-cover"
+                  src={currentUser?.images[0]?.url}
+                  alt={currentUser.display_name}
+                />
+              </div>
             </div>
-          ) : null}
-        </>
+          </nav>
+        </div>
       )}
     </>
   );
 }
 
 export default App;
+
+const NavButton = ({children}) => {
+  return (
+    <button className="rounded-full bg-[rgba(0,0,0,.7)] w-8 h-8 p-0 flex justify-center items-center">
+      {children}
+    </button>
+  );
+};
