@@ -123,3 +123,37 @@ export async function createNewPlaylist(userId, savedSongs) {
     const response = await fetchWebApi(`v1/playlists/${playlistId}/tracks`, 'POST', bodyy);
   }
 }
+
+export async function getPlaylists() {
+  let offset = 0;
+  const res = await fetchWebApi(`v1/me/playlists?limit=50&offset=${offset}`, 'GET');
+  const totalCount = Math.ceil(res.total / res.limit) - 1;
+  let playlists = res.items;
+  for (var i = 1; i <= totalCount; i++) {
+    offset = offset + 50;
+    const response = await fetchWebApi(`v1/me/playlists?limit=50&offset=${offset}`, 'GET');
+    let merged = playlists.concat(response.items);
+    playlists = merged;
+  }
+  return playlists;
+}
+
+export async function getPlaylistItems(playlistId = '3i5vTyUUMRYz8nlrAfPGyR') {
+  let offset = 0;
+  const res = await fetchWebApi(
+    `v1/playlists/${playlistId}/tracks?limit=50&offset=${offset}`,
+    'GET'
+  );
+  const totalCount = Math.ceil(res.total / res.limit) - 1;
+  let playlists = res.items;
+  for (var i = 1; i <= totalCount; i++) {
+    offset = offset + 50;
+    const response = await fetchWebApi(
+      `v1/playlists/${playlistId}/tracks?limit=50&offset=${offset}`,
+      'GET'
+    );
+    let merged = playlists.concat(response.items);
+    playlists = merged;
+  }
+  return playlists;
+}
