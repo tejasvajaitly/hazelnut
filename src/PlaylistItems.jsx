@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import {getPlaylistItems} from './utils';
 
 const mergerArtistnames = (artistsArray = []) => {
@@ -8,14 +9,18 @@ const mergerArtistnames = (artistsArray = []) => {
 
 const PlaylistItems = () => {
   const [playlistItems, setPlaylistItems] = useState(null);
-  const handleGetPlaylists = async () => {
-    const res = await getPlaylistItems();
-    setPlaylistItems(res);
-  };
-  return (
-    <>
-      <button onClick={handleGetPlaylists}>get playlist items</button>
+  let {playlistId} = useParams();
 
+  useEffect(() => {
+    const handleGetPlaylists = async () => {
+      const res = await getPlaylistItems(playlistId);
+      setPlaylistItems(res);
+    };
+    handleGetPlaylists();
+  }, []);
+
+  return (
+    <div className="overflow-auto h-[70vh]">
       {playlistItems ? (
         <ul>
           {playlistItems.map(playlistItem => (
@@ -29,7 +34,7 @@ const PlaylistItems = () => {
           ))}
         </ul>
       ) : null}
-    </>
+    </div>
   );
 };
 
