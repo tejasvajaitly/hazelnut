@@ -1,7 +1,7 @@
 const client_id = import.meta.env.VITE_CLIENT_ID;
 const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
 const scope =
-  'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-library-read';
+  'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-library-read user-modify-playback-state';
 
 export function generateCodeVerifier(length) {
   let text = '';
@@ -138,7 +138,7 @@ export async function getPlaylists() {
   return playlists;
 }
 
-export async function getPlaylistItems(playlistId = '3i5vTyUUMRYz8nlrAfPGyR') {
+export async function getPlaylistItems(playlistId) {
   let offset = 0;
   const res = await fetchWebApi(
     `v1/playlists/${playlistId}/tracks?limit=50&offset=${offset}`,
@@ -156,4 +156,25 @@ export async function getPlaylistItems(playlistId = '3i5vTyUUMRYz8nlrAfPGyR') {
     playlists = merged;
   }
   return playlists;
+}
+
+export async function clonePlaylist(userId, playlistId, playlistName, ownerName) {
+  const body = {
+    name: `${playlistName} clone`,
+    description: `playlist cloned from '${playlistName} by ${ownerName}'`,
+    public: true,
+  };
+  const newPlaylist = await fetchWebApi(`v1/users/${userId}/playlists`, 'POST', body);
+  if (newPlaylist.id) {
+    let playlistItems = await getPlaylistItems(playlistId);
+    let playlistItemsUri = playlistItems.map(playlistItem => playlistItem.track.uri);
+    const bodyy = {
+      uris: playlistItemsUri,
+    };
+    const updatedPlaylist = await fetchWebApi(
+      `v1/playlists/${newPlaylist.id}/tracks`,
+      'POST',
+      bodyy
+    );
+  }
 }

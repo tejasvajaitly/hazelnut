@@ -1,31 +1,25 @@
+import {useEffect, useContext} from 'react';
+import AuthContext from './context/AuthProvider';
+import {handleLogin, getAccessToken, fetchProfile} from './utils';
+import {Outlet, useNavigate} from 'react-router-dom';
+import Navbar from './Navbar';
+
 import './App.css';
-import {useEffect, useState} from 'react';
-import {
-  handleLogin,
-  getAccessToken,
-  fetchProfile,
-  getSaveddTracks,
-  createNewPlaylist,
-  getPlaylistItems,
-} from './utils';
-import {useNavigate} from 'react-router-dom';
-import {ReactComponent as LeftNav} from '../public/left-nav.svg';
-import {ReactComponent as RightNav} from '../public/right-nav.svg';
 
 function App() {
-  const [currentUser, setCurrentuser] = useState(null);
-  const [savedSongs, setSavedSongs] = useState(null);
-  const [offset, setOffset] = useState(0);
+  const {auth, user, setAuth, setUser} = useContext(AuthContext);
   const navigate = useNavigate();
-
   useEffect(() => {
     const authFlow = async () => {
       if (localStorage.getItem('access_token')) {
         const profile = await fetchProfile(localStorage.getItem('access_token'));
         if (!profile) {
           localStorage.removeItem('access_token');
+          setAuth(false);
         }
-        setCurrentuser(profile);
+
+        setAuth(true);
+        setUser(profile);
       } else {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -33,8 +27,9 @@ function App() {
           const accessToken = await getAccessToken(code);
           const profile = await fetchProfile(accessToken);
           if (profile) {
-            setCurrentuser(profile);
-            console.log('lol');
+            setAuth(true);
+            setUser(profile);
+          } else {
             navigate('/');
           }
         }
@@ -43,54 +38,53 @@ function App() {
     authFlow();
   }, []);
 
-  const handleGetSavedSongs = async () => {
-    const res = await getSaveddTracks(offset);
-    setSavedSongs(res);
-  };
-
-  const handleCreateNewPlaylist = async () => {
-    const userId = currentUser.uri.split(':')[2];
-    const res = await createNewPlaylist(userId, savedSongs);
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setAuth(false);
+    setUser(null);
   };
 
   return (
-    <>
-      {!currentUser ? (
-        <button onClick={handleLogin}>login with spotify</button>
-      ) : (
-        <div className="">
-          <nav className="relative bg-[#121212] fixed w-full z-20 top-0 left-0 rounded-lg">
-            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-              <div className="flex flex-row justify-between w-[72px]">
-                <NavButton>
-                  <LeftNav />
-                </NavButton>
-                <NavButton>
-                  <RightNav />
-                </NavButton>
-              </div>
-              <button className="rounded-full px-3 py-1 text-xs">logout</button>
-              <div className="rounded-full bg-black p-1 w-8 h-8">
-                <img
-                  className="rounded-full h-full w-full object-cover"
-                  src={currentUser?.images[0]?.url}
-                  alt={currentUser.display_name}
-                />
-              </div>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
+        <p>hazelnut</p>
+        {!auth ? (
+          <button onClick={handleLogin} className="rounded-full px-3 py-1 text-xs">
+            login
+          </button>
+        ) : (
+          <div className="flex flex-row gap-4">
+            <button onClick={handleLogout} className="rounded-full px-3 py-1 text-xs">
+              logout
+            </button>
+            <div className="rounded-full bg-black p-1 w-8 h-8">
+              <img
+                className="rounded-full h-full w-full object-cover"
+                src={user?.images[0]?.url}
+                alt={user?.displayName}
+              />
             </div>
-          </nav>
-        </div>
-      )}
-    </>
+          </div>
+        )}
+      </div>
+      <div className="w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
+        {!auth ? (
+          <p className="text-left">
+            Don't lose your favorite Spotify playlists ever again! hazelnut lets you clone any
+            playlist and make it your own. Preserve the music you love and enjoy it on your terms.
+            Simple, user-friendly, and hassle-free. Start cloning now!
+          </p>
+        ) : (
+          <div>
+            <Navbar />
+            <div>
+              <Outlet />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
 export default App;
-
-const NavButton = ({children}) => {
-  return (
-    <button className="rounded-full bg-[rgba(0,0,0,.7)] w-8 h-8 p-0 flex justify-center items-center">
-      {children}
-    </button>
-  );
-};
