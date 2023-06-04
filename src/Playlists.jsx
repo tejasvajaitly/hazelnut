@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 import {getPlaylists, clonePlaylist} from './utils';
 import Spinner from './Spinner';
 import {toast} from 'react-hot-toast';
+import {ReactComponent as PlaylistIcon} from '../public/playlist-icon.svg';
 
 const Playlists = () => {
   const [playlists, setPlaylists] = useState(null);
@@ -37,7 +38,7 @@ const Playlists = () => {
                 name={playlist.name}
                 owner={playlist.owner?.display_name}
                 type={playlist.type}
-                image={playlist.images[0]?.url}
+                image={playlist?.images[0]?.url}
                 id={playlist.id}
                 userId={user.id}
                 ownerId={playlist.owner.id}
@@ -68,7 +69,13 @@ const Playlist = ({
   return (
     <div className="grid grid-cols-[auto,1fr,1fr] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded">
       <div className="w-12 h-12 rounded">
-        <img src={image} alt={name} className="w-full h-full object-cover rounded" />
+        {image ? (
+          <img src={image} alt={name} className="w-full h-full object-cover rounded" />
+        ) : (
+          <div className="h-full w-full flex flex-col justify-center items-center bg-[#282828] rounded">
+            <PlaylistIcon />
+          </div>
+        )}
       </div>
       <div className="flex flex-row justify-start">
         <div className="flex flex-col">
