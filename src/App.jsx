@@ -63,7 +63,7 @@ function App() {
               logout
             </button>
             <div className="rounded-full bg-black p-1 w-8 h-8">
-              {user?.images[0]?.urll ? (
+              {user?.images[0]?.url ? (
                 <img
                   className="rounded-full h-full w-full object-cover"
                   src={user?.images[0]?.url}
@@ -81,9 +81,9 @@ function App() {
       <div className="w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
         {!auth ? (
           <p className="text-left">
-            Don't lose your favorite Spotify playlists ever again! hazelnut lets you clone any
-            playlist and make it your own. Preserve the music you love and enjoy it on your terms.
-            Simple, user-friendly, and hassle-free. Start cloning now!
+            Never lose your favorite Spotify playlists again! Clone any playlist with Hazelnut and
+            enjoy the music you love on your terms. Don't let modifications or deletions by the
+            original owner affect your experience. Start cloning now!
           </p>
         ) : (
           <div>
