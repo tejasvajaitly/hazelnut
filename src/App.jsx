@@ -5,10 +5,8 @@ import {Outlet, useNavigate} from 'react-router-dom';
 import Navbar from './Navbar';
 import './App.css';
 import {ReactComponent as AvatarIcon} from '../public/avatar-icon.svg';
-import {ReactComponent as Github} from '../public/github.svg';
 import {ReactComponent as Heart} from '../public/heart.svg';
-import {ReactComponent as Twitter} from '../public/twitter.svg';
-import {ReactComponent as Linked} from '../public/linkedin.svg';
+import {ReactComponent as Spotify} from '../public/spotify-logo.svg';
 
 function App() {
   const {auth, user, setAuth, setUser} = useContext(AuthContext);
@@ -58,7 +56,7 @@ function App() {
             onClick={handleLogin}
             className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
           >
-            <img className="h-3 w-3 mr-2" src="../public/spotify-logo.png" />
+            <Spotify className="h-3 w-3 mr-2" />
             login with spotify
           </button>
         ) : (
@@ -115,35 +113,25 @@ const Footer = () => {
         <div className="flex flex-row justify-center items-center">
           Made with <Heart className="mx-1" /> by Neil Jaitly
         </div>
-        <div className="flex flex-rows justify-around items-center gap-3">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/tejasvajaitly"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Github
-          </a>
-          |
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.linkedin.com/in/tejasvajaitly/"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Linked
-          </a>
-          |
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://twitter.com/neiljaitly7963"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Twitter
-          </a>
+        <div className="flex flex-rows justify-around items-center gap-3 text-gray-500">
+          <SocialAnchor link="https://github.com/tejasvajaitly" name="Github" />|
+          <SocialAnchor link="https://www.linkedin.com/in/tejasvajaitly/" name="Linked" />|
+          <SocialAnchor link="https://twitter.com/neiljaitly7963" name="Twitter" />
         </div>
       </div>
     </footer>
+  );
+};
+
+const SocialAnchor = ({link, name}) => {
+  return (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href={link}
+      className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
+    >
+      {name}
+    </a>
   );
 };
