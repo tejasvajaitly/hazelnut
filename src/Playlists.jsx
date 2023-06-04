@@ -8,12 +8,15 @@ import {ReactComponent as PlaylistIcon} from '../public/playlist-icon.svg';
 
 const Playlists = () => {
   const [playlists, setPlaylists] = useState(null);
-  const [loading, setLoading] = useState('');
+  const [clonePlaylistLoading, setClonePlaylistLoading] = useState('');
+  const [getPlaylistsLoading, setGetPlaylistsLoading] = useState(false);
   const {user} = useContext(AuthContext);
 
   const handleGetPlaylists = async () => {
+    setGetPlaylistsLoading(true);
     const res = await getPlaylists();
     setPlaylists(res);
+    setGetPlaylistsLoading(false);
   };
 
   useEffect(() => {
@@ -21,16 +24,20 @@ const Playlists = () => {
   }, []);
 
   const handleClonePlaylist = async (userId, id, name, owner) => {
-    setLoading(id);
+    setClonePlaylistLoading(id);
     await clonePlaylist(userId, id, name, owner);
     toast.success('playlist cloned!');
     handleGetPlaylists();
-    setLoading('');
+    setClonePlaylistLoading('');
   };
 
   return (
     <div className="overflow-auto h-[60vh]">
-      {playlists ? (
+      {getPlaylistsLoading ? (
+        <div className="w-full h-full flex flex-cols justify-center items-center">
+          <Spinner />
+        </div>
+      ) : playlists ? (
         <ul>
           {playlists.map(playlist => (
             <li key={playlist.id}>
@@ -43,7 +50,7 @@ const Playlists = () => {
                 userId={user.id}
                 ownerId={playlist.owner.id}
                 handleClonePlaylist={handleClonePlaylist}
-                loading={loading}
+                clonePlaylistLoading={clonePlaylistLoading}
               />
             </li>
           ))}
@@ -64,7 +71,7 @@ const Playlist = ({
   ownerId,
   userId,
   handleClonePlaylist,
-  loading,
+  clonePlaylistLoading,
 }) => {
   return (
     <div className="grid grid-cols-[auto,1fr,1fr] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded">
@@ -93,9 +100,9 @@ const Playlist = ({
           <button
             onClick={() => handleClonePlaylist(userId, id, name, owner)}
             className="rounded-full px-3 py-1 text-xs"
-            disabled={loading === id}
+            disabled={clonePlaylistLoading === id}
           >
-            {loading === id ? <Spinner /> : 'copy playlist'}
+            {clonePlaylistLoading === id ? <Spinner /> : 'copy playlist'}
           </button>
         </div>
 
