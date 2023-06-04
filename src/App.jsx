@@ -113,35 +113,25 @@ const Footer = () => {
         <div className="flex flex-row justify-center items-center">
           Made with <Heart className="mx-1" /> by Neil Jaitly
         </div>
-        <div className="flex flex-rows justify-around items-center gap-3">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/tejasvajaitly"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Github
-          </a>
-          |
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.linkedin.com/in/tejasvajaitly/"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Linked
-          </a>
-          |
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://twitter.com/neiljaitly7963"
-            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
-          >
-            Twitter
-          </a>
+        <div className="flex flex-rows justify-around items-center gap-3 text-gray-500">
+          <SocialAnchor link="https://github.com/tejasvajaitly" name="Github" />|
+          <SocialAnchor link="https://www.linkedin.com/in/tejasvajaitly/" name="Linked" />|
+          <SocialAnchor link="https://twitter.com/neiljaitly7963" name="Twitter" />
         </div>
       </div>
     </footer>
+  );
+};
+
+const SocialAnchor = ({link, name}) => {
+  return (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href={link}
+      className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
+    >
+      {name}
+    </a>
   );
 };
