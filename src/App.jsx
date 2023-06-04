@@ -50,7 +50,7 @@ function App() {
     setUser(null);
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="h-full flex flex-col gap-4">
       <div className="flex items-center justify-between w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
         <p>hazelnut</p>
         {!auth ? (
@@ -109,7 +109,7 @@ export default App;
 
 const Footer = () => {
   return (
-    <footer className="w-full max-w-2xl mx-auto  p-3 rounded-lg">
+    <footer className="w-full max-w-2xl mx-auto  p-3 rounded-lg mt-auto">
       <hr class="w-full border-1 border-gray-200 dark:border-gray-800 mb-6" />
       <div className="flex flex-row justify-between">
         <div className="flex flex-row justify-center items-center">
@@ -117,6 +117,8 @@ const Footer = () => {
         </div>
         <div className="flex flex-rows justify-around items-center gap-3">
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://github.com/tejasvajaitly"
             className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
           >
@@ -124,6 +126,8 @@ const Footer = () => {
           </a>
           |
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://www.linkedin.com/in/tejasvajaitly/"
             className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
           >
@@ -131,6 +135,8 @@ const Footer = () => {
           </a>
           |
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://twitter.com/neiljaitly7963"
             className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
           >
