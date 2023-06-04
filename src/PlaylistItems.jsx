@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {getPlaylistItems} from './utils';
+import Spinner from './Spinner';
 
 const mergerArtistnames = (artistsArray = []) => {
   const artists = artistsArray.map(artist => artist.name);
@@ -9,29 +10,39 @@ const mergerArtistnames = (artistsArray = []) => {
 
 const PlaylistItems = () => {
   const [playlistItems, setPlaylistItems] = useState(null);
+  const [loading, setLoading] = useState(false);
   let {playlistId} = useParams();
 
   useEffect(() => {
     const handleGetPlaylists = async () => {
+      setLoading(true);
       const res = await getPlaylistItems(playlistId);
       setPlaylistItems(res);
+      setLoading(false);
     };
+
     handleGetPlaylists();
   }, []);
 
   return (
     <div className="overflow-auto h-[70vh]">
-      {playlistItems ? (
+      {loading ? (
+        <div className="w-full h-full flex flex-cols justify-center items-center">
+          <Spinner />
+        </div>
+      ) : playlistItems ? (
         <ul>
-          {playlistItems.map(playlistItem => (
-            <li key={playlistItem.track.id}>
-              <PlaylistItem
-                name={playlistItem.track?.name}
-                image={playlistItem.track?.album?.images[0]?.url}
-                artists={mergerArtistnames(playlistItem.track?.artists)}
-              />
-            </li>
-          ))}
+          {playlistItems.map(playlistItem =>
+            playlistItem.track ? (
+              <li key={playlistItem?.track?.id}>
+                <PlaylistItem
+                  name={playlistItem.track?.name}
+                  image={playlistItem.track?.album?.images[0]?.url}
+                  artists={mergerArtistnames(playlistItem.track?.artists)}
+                />
+              </li>
+            ) : null
+          )}
         </ul>
       ) : null}
     </div>

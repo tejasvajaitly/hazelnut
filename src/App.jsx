@@ -3,8 +3,8 @@ import AuthContext from './context/AuthProvider';
 import {handleLogin, getAccessToken, fetchProfile} from './utils';
 import {Outlet, useNavigate} from 'react-router-dom';
 import Navbar from './Navbar';
-
 import './App.css';
+import {ReactComponent as AvatarIcon} from '../public/avatar-icon.svg';
 
 function App() {
   const {auth, user, setAuth, setUser} = useContext(AuthContext);
@@ -16,10 +16,13 @@ function App() {
         if (!profile) {
           localStorage.removeItem('access_token');
           setAuth(false);
+          setUser(null);
+          navigate('/');
+          console.log(auth, profile, ' this was profile and i guess its null');
+        } else {
+          setAuth(true);
+          setUser(profile);
         }
-
-        setAuth(true);
-        setUser(profile);
       } else {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -43,26 +46,34 @@ function App() {
     setAuth(false);
     setUser(null);
   };
-
+  console.log('render');
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
         <p>hazelnut</p>
         {!auth ? (
           <button onClick={handleLogin} className="rounded-full px-3 py-1 text-xs">
-            login
+            {console.log(auth, 'auth in return ')}
+            login with spotify
           </button>
         ) : (
           <div className="flex flex-row gap-4">
+            {console.log(auth, 'auth in return ')}
             <button onClick={handleLogout} className="rounded-full px-3 py-1 text-xs">
               logout
             </button>
             <div className="rounded-full bg-black p-1 w-8 h-8">
-              <img
-                className="rounded-full h-full w-full object-cover"
-                src={user?.images[0]?.url}
-                alt={user?.displayName}
-              />
+              {user?.images[0]?.urll ? (
+                <img
+                  className="rounded-full h-full w-full object-cover"
+                  src={user?.images[0]?.url}
+                  alt={user?.displayName}
+                />
+              ) : (
+                <div className="rounded-full bg-[#282828] h-full w-full flex flex-col justify-center items-center">
+                  <AvatarIcon />
+                </div>
+              )}
             </div>
           </div>
         )}
