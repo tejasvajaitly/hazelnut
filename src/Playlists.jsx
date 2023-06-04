@@ -29,7 +29,7 @@ const Playlists = () => {
   };
 
   return (
-    <div className="overflow-auto h-[70vh]">
+    <div className="overflow-auto h-[60vh]">
       {playlists ? (
         <ul>
           {playlists.map(playlist => (

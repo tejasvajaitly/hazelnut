@@ -160,7 +160,7 @@ export async function getPlaylistItems(playlistId) {
 
 export async function clonePlaylist(userId, playlistId, playlistName, ownerName) {
   const body = {
-    name: `${playlistName} clone`,
+    name: `${playlistName} (hazelnut version)`,
     description: `playlist cloned from '${playlistName} by ${ownerName}'`,
     public: true,
   };

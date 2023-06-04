@@ -25,7 +25,7 @@ const PlaylistItems = () => {
   }, []);
 
   return (
-    <div className="overflow-auto h-[70vh]">
+    <div className="overflow-auto h-[60vh]">
       {loading ? (
         <div className="w-full h-full flex flex-cols justify-center items-center">
           <Spinner />
