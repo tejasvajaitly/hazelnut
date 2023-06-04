@@ -5,6 +5,10 @@ import {Outlet, useNavigate} from 'react-router-dom';
 import Navbar from './Navbar';
 import './App.css';
 import {ReactComponent as AvatarIcon} from '../public/avatar-icon.svg';
+import {ReactComponent as Github} from '../public/github.svg';
+import {ReactComponent as Heart} from '../public/heart.svg';
+import {ReactComponent as Twitter} from '../public/twitter.svg';
+import {ReactComponent as Linked} from '../public/linkedin.svg';
 
 function App() {
   const {auth, user, setAuth, setUser} = useContext(AuthContext);
@@ -18,7 +22,6 @@ function App() {
           setAuth(false);
           setUser(null);
           navigate('/');
-          console.log(auth, profile, ' this was profile and i guess its null');
         } else {
           setAuth(true);
           setUser(profile);
@@ -46,19 +49,20 @@ function App() {
     setAuth(false);
     setUser(null);
   };
-  console.log('render');
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between w-full max-w-2xl mx-auto bg-[#121212] p-4 rounded-lg">
         <p>hazelnut</p>
         {!auth ? (
-          <button onClick={handleLogin} className="rounded-full px-3 py-1 text-xs">
-            {console.log(auth, 'auth in return ')}
+          <button
+            onClick={handleLogin}
+            className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
+          >
+            <img className="h-3 w-3 mr-2" src="../public/spotify-logo.png" />
             login with spotify
           </button>
         ) : (
           <div className="flex flex-row gap-4">
-            {console.log(auth, 'auth in return ')}
             <button onClick={handleLogout} className="rounded-full px-3 py-1 text-xs">
               logout
             </button>
@@ -94,8 +98,46 @@ function App() {
           </div>
         )}
       </div>
+      <>
+        <Footer />
+      </>
     </div>
   );
 }
 
 export default App;
+
+const Footer = () => {
+  return (
+    <footer className="w-full max-w-2xl mx-auto  p-3 rounded-lg">
+      <hr class="w-full border-1 border-gray-200 dark:border-gray-800 mb-6" />
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-center items-center">
+          Made with <Heart className="mx-1" /> by Neil Jaitly
+        </div>
+        <div className="flex flex-rows justify-around items-center gap-3">
+          <a
+            href="https://github.com/tejasvajaitly"
+            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
+          >
+            Github
+          </a>
+          |
+          <a
+            href="https://www.linkedin.com/in/tejasvajaitly/"
+            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
+          >
+            Linked
+          </a>
+          |
+          <a
+            href="https://twitter.com/neiljaitly7963"
+            className="cursor-pointer text-gray-500 hover:text-gray-600 transition"
+          >
+            Twitter
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+};
