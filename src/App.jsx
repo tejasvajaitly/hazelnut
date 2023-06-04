@@ -5,10 +5,8 @@ import {Outlet, useNavigate} from 'react-router-dom';
 import Navbar from './Navbar';
 import './App.css';
 import {ReactComponent as AvatarIcon} from '../public/avatar-icon.svg';
-import {ReactComponent as Github} from '../public/github.svg';
 import {ReactComponent as Heart} from '../public/heart.svg';
-import {ReactComponent as Twitter} from '../public/twitter.svg';
-import {ReactComponent as Linked} from '../public/linkedin.svg';
+import {ReactComponent as Spotify} from '../public/spotify-logo.svg';
 
 function App() {
   const {auth, user, setAuth, setUser} = useContext(AuthContext);
@@ -58,7 +56,7 @@ function App() {
             onClick={handleLogin}
             className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
           >
-            <img className="h-3 w-3 mr-2" src="../public/spotify-logo.png" />
+            <Spotify className="h-3 w-3 mr-2" />
             login with spotify
           </button>
         ) : (
