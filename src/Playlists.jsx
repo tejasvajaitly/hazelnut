@@ -118,7 +118,7 @@ const Playlist = ({
       </div>
       <div className="flex flex-row justify-start">
         <div className="flex flex-col">
-          <NavLink to={`playlist/${id}`}>
+          <NavLink to={id === 'yourlikedsongs' ? `likedsongs` : `playlist/${id}`}>
             <p className="cursor-pointer hover:underline text-left text-base font-medium text-white">
               {name}
             </p>
