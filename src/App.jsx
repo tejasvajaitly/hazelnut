@@ -108,7 +108,7 @@ export default App;
 const Footer = () => {
   return (
     <footer className="w-full max-w-2xl mx-auto  p-3 rounded-lg mt-auto">
-      <hr class="w-full border-1 border-gray-200 dark:border-gray-800 mb-6" />
+      <hr className="w-full border-1 border-gray-200 dark:border-gray-800 mb-6" />
       <div className="flex flex-wrap flex-row justify-between gap-3">
         <div className="flex flex-row justify-center items-center">
           Made with <Heart className="mx-1" /> by Neil Jaitly
