@@ -85,7 +85,15 @@ async function fetchWebApi(endpoint, method, body) {
   return await res.json();
 }
 
-export async function getSaveddTracks(offset) {
+export async function getLikedSongsCount() {
+  const res = await fetchWebApi(`v1/me/tracks?limit=1&offset=0`, 'GET');
+  if (res) {
+    return res.total;
+  }
+}
+
+export async function getLikedTracks() {
+  let offset = 0;
   const res = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
   const totalCount = Math.ceil(res.total / res.limit) - 1;
   let savedSongs = res.items;
@@ -98,7 +106,8 @@ export async function getSaveddTracks(offset) {
   return savedSongs;
 }
 
-export async function createNewPlaylist(userId, savedSongs) {
+export async function cloneLikedSongs(userId) {
+  let savedSongs = await getLikedTracks();
   const body = {
     name: 'liked songs(hazelnut)',
     description: 'playlist created using hazelnut',
