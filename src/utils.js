@@ -1,7 +1,7 @@
 const client_id = import.meta.env.VITE_CLIENT_ID;
 const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
 const scope =
-  'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-top-read user-library-read user-modify-playback-state';
+  'user-read-private user-read-email playlist-read-private playlist-modify-private playlist-modify-public user-library-read';
 
 export function generateCodeVerifier(length) {
   let text = '';
