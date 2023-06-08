@@ -18,6 +18,7 @@ const Playlists = () => {
 
   const handleGetPlaylists = async () => {
     const res = await getPlaylists();
+    console.log(res);
     setPlaylists(res);
   };
 
@@ -83,7 +84,7 @@ const Playlists = () => {
                 ownerId={playlist.owner.id}
                 handleClonePlaylist={handleClonePlaylist}
                 clonePlaylistLoading={clonePlaylistLoading}
-                link={playlist.track?.external_urls?.spotify}
+                link={playlist?.external_urls?.spotify}
               />
             </li>
           ))}

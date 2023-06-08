@@ -76,7 +76,13 @@ const PlaylistItem = ({name, artists = '', image, link}) => {
         href={link}
         className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
       >
-        <img className="h-3 w-3 mr-2" src={spotifyLogo} />
+        <img
+          target="_blank"
+          rel="noopener noreferrer"
+          href={link}
+          className="h-3 w-3 mr-2"
+          src={spotifyLogo}
+        />
         Listen on Spotify
       </a>
     </div>
