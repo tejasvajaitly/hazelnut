@@ -111,13 +111,13 @@ const Playlist = ({
     <div className="grid grid-cols-[auto,1fr,1fr] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded">
       <div className="flex flex-row items-center gap-4">
         <img className="h-4 w-4" src={spotifyLogo} />
-        <div className="w-12 h-12 rounded">
+        <div className="w-12 h-12 ">
           {image ? (
-            <img src={image} alt={name} className="w-full h-full object-cover rounded" />
+            <img src={image} alt={name} className="w-full h-full object-cover " />
           ) : id === 'yourlikedsongs' ? (
-            <img className="rounded" src={likedSongs} />
+            <img className="" src={likedSongs} />
           ) : (
-            <div className="h-full w-full flex flex-col justify-center items-center bg-[#282828] rounded">
+            <div className="h-full w-full flex flex-col justify-center items-center bg-[#282828] ">
               <PlaylistIcon />
             </div>
           )}

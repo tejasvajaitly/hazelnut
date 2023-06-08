@@ -57,8 +57,8 @@ const PlaylistItem = ({name, artists = '', image, link}) => {
   return (
     <div className="grid grid-cols-[auto,1fr,auto] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded cursor-pointer">
       <div>
-        <div className="w-12 h-12 rounded">
-          <img src={image} alt={name} className="w-full h-full object-cover rounded" />
+        <div className="w-12 h-12 ">
+          <img src={image} alt={name} className="w-full h-full object-cover " />
         </div>
       </div>
       <div>

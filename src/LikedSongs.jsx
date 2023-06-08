@@ -53,8 +53,8 @@ export default LikedSongs;
 const PlaylistItem = ({name, artists = '', image}) => {
   return (
     <div className="grid grid-cols-[auto,1fr] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded cursor-pointer">
-      <div className="w-12 h-12 rounded">
-        <img src={image} alt={name} className="w-full h-full object-cover rounded" />
+      <div className="w-12 h-12 ">
+        <img src={image} alt={name} className="w-full h-full object-cover " />
       </div>
       <div className="flex flex-row justify-start">
         <div className="flex flex-col">
