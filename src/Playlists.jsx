@@ -111,14 +111,13 @@ const Playlist = ({
   return (
     <div className="grid grid-cols-[auto,1fr,1fr] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded">
       <div className="flex flex-row items-center gap-4">
-        <img className="h-4 w-4" src={spotifyLogo} />
-        <div className="w-12 h-12 ">
+        <div className="w-12 h-12 rounded">
           {image ? (
-            <img src={image} alt={name} className="w-full h-full object-cover " />
+            <img src={image} alt={name} className="w-full h-full object-cover rounded" />
           ) : id === 'yourlikedsongs' ? (
-            <img className="" src={likedSongs} />
+            <img className="rounded" src={likedSongs} />
           ) : (
-            <div className="h-full w-full flex flex-col justify-center items-center bg-[#282828] ">
+            <div className="h-full w-full flex flex-col justify-center items-center bg-[#282828] rounded">
               <PlaylistIcon />
             </div>
           )}
@@ -137,29 +136,18 @@ const Playlist = ({
         </div>
       </div>
 
-      <div className="flex flex-row items-start gap-3">
-        <div className="flex flex-col justify-evenly">
-          <div>
-            <button
-              onClick={() => handleClonePlaylist(userId, id, name, propertyTwo)}
-              className="rounded-full px-3 py-1 text-xs"
-              disabled={clonePlaylistLoading === id}
-            >
-              {clonePlaylistLoading === id ? <Spinner /> : 'copy playlist'}
-            </button>
-          </div>
-
-          {ownerId !== userId ? <p className="text-xs text-red-400">you dont own this</p> : null}
+      <div className="flex flex-col justify-evenly">
+        <div>
+          <button
+            onClick={() => handleClonePlaylist(userId, id, name, propertyTwo)}
+            className="rounded-full px-3 py-1 text-xs"
+            disabled={clonePlaylistLoading === id}
+          >
+            {clonePlaylistLoading === id ? <Spinner /> : 'copy playlist'}
+          </button>
         </div>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={link}
-          className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
-        >
-          <img className="h-3 w-3 mr-2" src={spotifyLogo} />
-          Listen on Spotify
-        </a>
+
+        {ownerId !== userId ? <p className="text-xs text-red-400">you dont own this</p> : null}
       </div>
     </div>
   );
