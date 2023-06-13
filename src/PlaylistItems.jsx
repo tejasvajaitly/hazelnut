@@ -57,8 +57,8 @@ const PlaylistItem = ({name, artists = '', image, link}) => {
   return (
     <div className="grid grid-cols-[auto,1fr,auto] gap-4 p-2 hover:bg-[hsla(0,0%,100%,.07)] rounded cursor-pointer">
       <div>
-        <div className="w-12 h-12 ">
-          <img src={image} alt={name} className="w-full h-full object-cover " />
+        <div className="w-12 h-12 rounded">
+          <img src={image} alt={name} className="w-full h-full object-cover rounded" />
         </div>
       </div>
       <div>
@@ -69,22 +69,6 @@ const PlaylistItem = ({name, artists = '', image, link}) => {
           </div>
         </div>
       </div>
-
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={link}
-        className="rounded-full px-3 py-1 text-xs flex flex-row justify-around items-center"
-      >
-        <img
-          target="_blank"
-          rel="noopener noreferrer"
-          href={link}
-          className="h-3 w-3 mr-2"
-          src={spotifyLogo}
-        />
-        Listen on Spotify
-      </a>
     </div>
   );
 };
