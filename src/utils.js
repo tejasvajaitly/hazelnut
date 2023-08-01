@@ -92,18 +92,24 @@ export async function getLikedSongsCount() {
   }
 }
 
-export async function getLikedTracks() {
-  let offset = 0;
+// export async function getLikedTracks() {
+//   let offset = 0;
+//   const res = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
+//   const totalCount = Math.ceil(res.total / res.limit) - 1;
+//   let savedSongs = res.items;
+//   for (var i = 1; i <= totalCount; i++) {
+//     offset = offset + 50;
+//     const response = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
+//     let merged = savedSongs.concat(response.items);
+//     savedSongs = merged;
+//   }
+//   return savedSongs;
+// }
+
+export async function getLikedTracks(offset) {
   const res = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
-  const totalCount = Math.ceil(res.total / res.limit) - 1;
-  let savedSongs = res.items;
-  for (var i = 1; i <= totalCount; i++) {
-    offset = offset + 50;
-    const response = await fetchWebApi(`v1/me/tracks?limit=50&offset=${offset}`, 'GET');
-    let merged = savedSongs.concat(response.items);
-    savedSongs = merged;
-  }
-  return savedSongs;
+  return {tracks: res.items, next: res.next};
+  return res.items;
 }
 
 export async function cloneLikedSongs(userId) {
